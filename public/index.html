@@ -1,0 +1,304 @@
+﻿<html>
+	<head>
+		<title>Nyilvántartó</title>
+		<script src="js/angular.min.js"></script>
+		<script src="js/index.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<meta charset="UTF-8">
+		<style>
+			#space{
+				height:80px;
+		</style>
+		
+	</head>
+	<body ng-app="quiver" ng-controller="menuCtrl">
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" >Tegez</a>
+				</div>
+				<ul class="nav navbar-nav">
+					<li><button class="btn navbar-btn" ng-click="show_login()">Login</button></li>
+					<li><button class="btn navbar-btn" ng-click="show_edit()">Edit user</button></li>
+					<li><button class="btn navbar-btn" ng-click="list_requests()">List requests</button></li>
+					<li><button class="btn navbar-btn" ng-click="show_teach_list()">Listt</button></li>
+					<li><button class="btn navbar-btn" ng-click="show_adm_list()">Lista</button></li>
+				</ul>
+			</div>
+		</nav>
+		<div id="space"></div>
+		<div id="login">
+		<div class="container">		
+			<form>
+				<div class="row">
+					<div class="col-sm-offset-3 col-sm-3" style="background-color:lavenderblush;">
+						<div class="form-group"> felhasználó:
+							<input type="text" name="username" id ="username">
+						</div>
+					</div>
+					<div class="col-sm-3" style="background-color:lavender;"><div class="form-group">
+						jelszó:
+						<input type="password" name="password" id="password">
+					</div>
+				</div>
+				<div class="col-sm-3" >
+					<button class="btn btn-default" ng-click="login()">Belépés</button>
+				</div>
+				<div class="col-sm-3" ></div>
+				</div>			
+			</form>			
+				<div class="row">
+					<div class="col-sm-offset-4 col-sm-4">
+					  
+						  <img src="https://s-media-cache-ak0.pinimg.com/originals/38/77/2d/38772dfa798292861cf1853d2a4afc22.jpg" class="img-circle" alt="Cinque Terre" width="304" height="236"> 
+						  <div class="caption text-center">
+							<p>Ilyet is tudok</p>
+						  </div>					
+					 </div>
+				</div>
+			
+		 </div>			
+		</div>	
+		<div id="editUser">
+		<div class="container">
+		
+			<form>
+				<div class="row">
+					<div class="col-sm-offset-3 col-sm-3" style="background-color:lavenderblush;">
+						<div class="form-group"> régi jelszó:
+							<input type="password" name="oldpassword" id ="oldpassword">
+						</div>
+					</div>
+					 <div class="col-sm-4" style="background-color:lavender;">
+						 <div class="form-group">
+							új jelszó:
+							<input type="password" name="newpassword" id="newpassword">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+				  	  <div class="col-sm-offset-3 col-sm-3" >
+						  <button class="btn btn-default" ng-click="edit_user_details()">Mentés</button>
+				    	</div>
+			
+					 <div class="col-sm-4" style="background-color:lavenderblush;">
+						 <div class="form-group">
+							jelszó megerősítése:
+						<input type="password" name="repeatpassword" id="repeatpassword">
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+			
+		</div>
+	
+		<div id="stud_list">
+		<div class="container">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Kérvény típusa</th>
+						<th>Tanár</th>
+						<th>Ügyintéző</th>
+						<th>Komment</th>
+						<th>Állapot</th>
+					</tr>
+				</thead>
+			</table>
+			<button class="btn btn-default" ng-click="new_request()">Új kérvény</button>
+		</div>
+		</div>
+		<div id="teach_list">
+		<div class="container">
+		
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Diák</th>
+						<th>Kérvény típusa</th>
+						<th>Ügyintéző</th>
+						<th>Komment</th>
+						<th>Állapot</th>
+					</tr>
+				</thead>
+			</table>
+			<button class="btn btn-default" ng-click="teach_forward()">Továbbítás</button>
+		</div>
+		</div>
+		
+		<div id="adm_list">
+			<div class="container">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Diák</th>
+						<th>Kérvény típusa</th>
+						<th>Tanár</th>
+						<th>Komment</th>
+						<th>Állapot</th>
+						<th>Kijelölés</th>
+					</tr>
+				</thead>
+			</table>
+			<button class="btn btn-default" ng-click="req_accept()">Elfogad</button>
+			<button class="btn btn-default" ng-click="req_decline()">Elutasít</button>
+		</div>
+	</div>
+	</body>
+	<script>
+			window.onload = function() {
+			setVisibility("login");
+		}
+
+		function setVisibility(name) {
+			if (name === "login") {
+				document.getElementById("editUser").style.visibility = "hidden";
+				document.getElementById("stud_list").style.visibility = "hidden";
+				document.getElementById("teach_list").style.visibility = "hidden";
+				document.getElementById("adm_list").style.visibility = "hidden";
+				document.getElementById("login").style.visibility = "visible";
+
+				document.getElementById("editUser").style.height = "0";
+				document.getElementById("stud_list").style.height = "0";
+				document.getElementById("teach_list").style.height = "0";
+				document.getElementById("adm_list").style.height = "0";
+			}
+			else if (name === "editUser") {
+				document.getElementById("login").style.visibility = "hidden";
+				document.getElementById("stud_list").style.visibility = "hidden";
+				document.getElementById("teach_list").style.visibility = "hidden";
+				document.getElementById("adm_list").style.visibility = "hidden";
+				document.getElementById("editUser").style.visibility = "visible";
+
+				document.getElementById("login").style.height = "0";
+				document.getElementById("stud_list").style.height = "0";
+				document.getElementById("teach_list").style.height = "0";
+				document.getElementById("adm_list").style.height = "0";	
+			}
+			else if (name === "stud_list") {
+				document.getElementById("editUser").style.visibility = "hidden";
+				document.getElementById("login").style.visibility = "hidden";
+				document.getElementById("stud_list").style.visibility = "visible";
+				document.getElementById("teach_list").style.visibility = "hidden";
+				document.getElementById("adm_list").style.visibility = "hidden";
+
+				document.getElementById("login").style.height = "0";
+				document.getElementById("editUser").style.height = "0";
+				document.getElementById("teach_list").style.height = "0";
+				document.getElementById("adm_list").style.height = "0";
+			}
+			else if (name === "adm_list") {
+				document.getElementById("editUser").style.visibility = "hidden";
+				document.getElementById("login").style.visibility = "hidden";
+				document.getElementById("stud_list").style.visibility = "hidden";
+				document.getElementById("teach_list").style.visibility = "hidden";
+				document.getElementById("adm_list").style.visibility = "visible";		
+
+				document.getElementById("login").style.height = "0";
+				document.getElementById("stud_list").style.height = "0";
+				document.getElementById("teach_list").style.height = "0";
+				document.getElementById("editUser").style.height = "0";
+			}
+			else if (name === "teach_list") {
+				document.getElementById("editUser").style.visibility = "hidden";
+				document.getElementById("login").style.visibility = "hidden";
+				document.getElementById("stud_list").style.visibility = "hidden";
+				document.getElementById("teach_list").style.visibility = "visible";
+				document.getElementById("adm_list").style.visibility = "hidden";
+
+				document.getElementById("login").style.height = "0";
+				document.getElementById("stud_list").style.height = "0";
+				document.getElementById("editUser").style.height = "0";
+				document.getElementById("adm_list").style.height = "0";
+			}
+		}
+
+		var quiverModule = angular.module("quiver",[]);
+		var userLevel = undefined;
+		var loggedInUser = undefined;
+
+		quiverModule.controller ("menuCtrl",function($scope,$http) {
+			$scope.show_login = function() {
+				setVisibility("login");
+			};
+
+			$scope.show_edit = function() {
+				setVisibility("editUser");
+			};
+
+			$scope.show_stud_list = function() {
+				setVisibility("stud_list");
+			};
+			
+			$scope.show_teach_list = function() {
+				setVisibility("teach_list");
+			};
+			
+			$scope.show_adm_list = function() {
+				setVisibility("adm_list");
+			};
+			
+			$scope.login = function() {
+				var username = document.getElementById("username").value;
+				var password = document.getElementById("password").value;
+				
+				$http.post("/login", {"name" : username, "pass" : password}).then(function(data) {
+					loggedInUser = username;
+					userLevel = data.data;
+					console.log(userLevel);
+				});
+			};
+			
+			$scope.edit_user_details = function() {
+				var oldpassword = document.getElementById("oldpassword").value;
+				var newpassword = document.getElementById("newpassword").value;
+				var repeatpassword = document.getElementById("repeatpassword").value;
+				
+				$http.post("/edit", {"name" : loggedInUser, "pass" : oldpassword, "newpass" : newpassword, "newpassagain" : repeatpassword}).then(function(data) {
+					console.log(data.data);
+				});
+				
+			};
+			
+			$scope.new_request = function() {
+				var type = prompt("type");
+				var fromUser = prompt("from");
+				var teacher = prompt("teacher");
+				
+				$http.post("/submit", {"type" : type, "from" : fromUser, "teacher" : teacher}).then(function(data) {
+					console.log(data.data);
+				});
+			};
+			
+			$scope.teach_forward = function() {
+				var reqID = prompt("ID");
+				var pos = prompt("pos");
+				var forwardto = prompt("forwardto");
+				
+				$http.post("/forward", {"id" : reqID, "pos" : pos, "forwardto" : forwardto}).then(function(data) {
+					console.log(data.data);
+				});
+			};
+			
+			$scope.req_accept = function() {
+				var reqID = prompt("ID");
+				var pos = prompt("pos");
+				
+				$http.post("/verdict", {"id" : reqID, "pos" : pos, "newstate" : "Accepted"}).then(function(data) {
+					console.log(data.data);
+				});
+			};
+			
+			$scope.req_decline = function() {
+				var reqID = prompt("ID");
+				var pos = prompt("pos");
+				
+				$http.post("/verdict", {"id" : reqID, "pos" : pos, "newstate" : "Declined"}).then(function(data) {
+					console.log(data.data);
+				});
+			};
+		});
+</script>
+</html>
