@@ -6,14 +6,9 @@ var bodyParser = require('body-parser');
 
 var app = express();
 
-var logins = [{"name" : "Pista", "pass" : "pisti", "position" : "adm"},
-			  {"name" : "Joska", "pass" : "joska", "position" : "stud"},
-			  {"name" : "Karcsi", "pass" : "karcsi", "position" : "stud"},
-			  {"name" : "Ádám", "pass" : "adam", "position" : "teach"},
-			  {"name" : "Peti", "pass" : "peter", "position" : "teach"}];
+var logins = JSON.parse(fs.readFileSync(__dirname+"/logins.json"));
 var reqtemplates = ["Tűzgyújtási kérelem", "Tárgyfelvétel"];
-var requests = [{"ID" : 0, "type" : 0, "from" : "Joska", "teacher" : "Ádám", "comment" : "van", "state" : "Declined", "administrator" : "Pista"},
-				{"ID" : 1, "type" : 1, "from" : "Karcsi", "teacher" : "Peti", "comment" : "nincs", "state" : "Pending", "administrator" : undefined}];
+var requests = JSON.parse(fs.readFileSync(__dirname+"/requests.json"));
 
 app.use(express.static('public'));
 app.use(express.static('public/js'));
@@ -39,6 +34,7 @@ app.post("/edit", function(req, res) {
 		if (item.name === req.body.name) {
 			if (item.pass === req.body.pass && req.body.newpass === req.body.newpassagain) {
 				item.pass = req.body.newpass;
+				fs.writeFile(__dirname+"/logins.json",JSON.stringify(logins));
 				response = "ok";
 			}
 		}
@@ -46,24 +42,24 @@ app.post("/edit", function(req, res) {
 	res.send(response);
 });
 
-app.post("/listreq", function(req, res) {
+app.post("/listrequests", function(req, res) {
 	var response = [];
 	
-	if (req.body.pos === "stud") {
+	if (req.body.pos === "student") {
 		requests.forEach(function(item, index) {
 			if (req.body.name === item.from) {
 				response.push(item);
 			}
 		});
 	}
-	else if (req.body.pos === "teach") {
+	else if (req.body.pos === "teacher") {
 		requests.forEach(function(item, index) {
 			if (req.body.name === item.teacher) {
 				response.push(item);
 			}
 		});
 	}
-	else if (req.body.pos === "adm") {
+	else if (req.body.pos === "admin") {
 		requests.forEach(function(item, index) {
 			if (req.body.name === item.administrator) {
 				response.push(item);
@@ -81,9 +77,10 @@ app.post("/verdict", function(req, res)  {
 	var response = "err";
 	var id = req.body.id;
 	
-	if (req.body.pos === "adm"  && requests[id].state === "Pending") {
+	if (requests[id].state === "Pending") {
 		requests[id].state = req.body.newstate;
 		response = "ok";
+		fs.writeFile(__dirname+"/requests.json",JSON.stringify(requests));
 	}
 	
 	res.send(response);
@@ -92,7 +89,7 @@ app.post("/verdict", function(req, res)  {
 app.post("/createtemplate", function(req, res) {
 	var response = "err";
 	
-	if (req.body.pos === "adm") {
+	if (req.body.pos === "admin") {
 		reqtemplates.push(req.body.templatename);
 		response = "ok";
 	}
@@ -104,7 +101,7 @@ app.post("/comment", function(req, res) {
 	var response = "err";
 	var id = req.body.id;
 	
-	if(req.body.pos === "teach") {
+	if(req.body.pos === "teacher") {
 		requests[id].comment = req.body.comment;
 		response = "ok";
 	}
@@ -116,11 +113,10 @@ app.post("/forward", function(req, res) {
 	var response = "err";
 	var id = req.body.id;
 	
-	if (req.body.pos === "teach" && requests[id].administrator === undefined) {
+	if (req.body.pos === "teacher" && requests[id].administrator === undefined) {
 		requests[id].administrator = req.body.forwardto;
 		response = "ok";
 	}
-	
 	res.send(response);
 });
 
@@ -137,6 +133,7 @@ app.post("/submit", function(req, res) {
 	
 	if (type != undefined && body.from != undefined && body.teacher != undefined) {
 		requests.push({"ID" : requests.length, "type" : type, "from" : body.from, "teacher" : body.teacher, "comment" : undefined, "state" : "Pending", "administrator" : undefined});
+		fs.writeFile(__dirname+"/requests.json",JSON.stringify(requests));
 		response = "ok";
 	}
 	
