@@ -1,1 +1,1 @@
-[{"ID" : 0, "type" : 0, "from" : "Joska", "teacher" : "Ádám", "comment" : "van", "state" : "Declined", "administrator" : "Pista"},{"ID" : 1, "type" : 1, "from" : "Karcsi", "teacher" : "Peti", "comment" : "nincs", "state" : "Pending", "administrator" : ""}]
+[{"ID":0,"type":0,"from":"Joska","teacher":"Ádám","comment":"van","state":"Pending","administrator":"Pista"},{"ID":1,"type":1,"from":"Karcsi","teacher":"Peti","comment":"nincs","state":"Accepted","administrator":"Pista"}]

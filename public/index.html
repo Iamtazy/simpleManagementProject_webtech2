@@ -1,8 +1,8 @@
 ﻿<html>
 	<head>
-		<title>Kérvény nyilvántartó</title>
+		<title>Request Manager</title>
 		<script src="js/angular.min.js"></script>
-		<script src="js/jquery-3.2.1.min"></script>
+		<script src="js/jquery-3.2.1.min.js"></script>
 		<script src="js/index.js"></script>
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 		 <script src="js/bootstrap.min.js"></script>
@@ -27,7 +27,7 @@
 		<nav class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container-fluid">
 				<div class="navbar-header">
-					<a class="navbar-brand" >Kérvény nyilvántartás</a>
+					<a class="navbar-brand" >Request Management</a>
 				</div>
 				<ul class="nav navbar-nav">
 					<li id="loginButton"><button class="btn navbar-btn" ng-click="show_login()">Login</button></li>
@@ -35,7 +35,7 @@
 					<li><button class="btn navbar-btn" ng-click="show_student_list()">Student requests</button></li>
 					<li><button class="btn navbar-btn" ng-click="show_teacher_list()">Teacher requests</button></li>
 					<li><button class="btn navbar-btn" ng-click="show_admin_list()">Admin requests</button></li>
-					<li id="logUser"><p>Bejelentkezve:  {{loggedInUser}}, {{userLevel}}</p></li>
+					<li id="logUser"><p>User logged in:  {{loggedInUser}}, {{userLevel}}</p></li>
 				</ul>
 				<ul class="nav navbar-right">
 					<li id="logoutButton"><button class="btn navbar-btn" ng-click="logout()">Logout</button></li>
@@ -48,17 +48,17 @@
 			<form>
 				<div class="row">
 					<div class="col-sm-offset-3 col-sm-3" style="background-color:lavenderblush;">
-						<div class="form-group"> Felhasználó:
+						<div class="form-group"> Username:
 							<input type="text" name="username" id ="username">
 						</div>
 					</div>
 					<div class="col-sm-3" style="background-color:lavender;"><div class="form-group">
-						Jelszó:
+						Password:
 						<input type="password" name="password" id="password">
 					</div>
 				</div>
 				<div class="col-sm-3" >
-					<button class="btn btn-default" ng-click="login()">Belépés</button>
+					<button class="btn btn-default" ng-click="login()">Login</button>
 				</div>
 				<div class="col-sm-3" ></div>
 				</div>			
@@ -71,25 +71,25 @@
 			<form>
 				<div class="row">
 					<div class="col-sm-offset-3 col-sm-3" style="background-color:lavenderblush;">
-						<div class="form-group"> Régi jelszó:
+						<div class="form-group"> Old password:
 							<input type="password" name="oldpassword" id ="oldpassword">
 						</div>
 					</div>
 					 <div class="col-sm-4" style="background-color:lavender;">
 						 <div class="form-group">
-							Új jelszó:
+							New password:
 							<input type="password" name="newpassword" id="newpassword">
 						</div>
 					</div>
 				</div>
 				<div class="row">
 				  	  <div class="col-sm-offset-3 col-sm-3" >
-						  <button class="btn btn-default" ng-click="edit_user_details()">Mentés</button>
+						  <button class="btn btn-default" ng-click="edit_user_details()">Change</button>
 				    	</div>
 			
 					 <div class="col-sm-4" style="background-color:lavenderblush;">
 						 <div class="form-group">
-							Jelszó megerősítése:
+							Retype password:
 						<input type="password" name="repeatpassword" id="repeatpassword">
 						</div>
 					</div>
@@ -105,11 +105,11 @@
 				<thead>
 					<tr>
 						<th>ID</th>
-						<th>Kérvény típusa</th>
-						<th>Tanár</th>
-						<th>Ügyintéző</th>
-						<th>Komment</th>
-						<th>Állapot</th>
+						<th>Request type</th>
+						<th>Teacher</th>
+						<th>Administrator</th>
+						<th>Comment</th>
+						<th>State</th>
 					</tr>
 				</thead>
 				<tr ng-repeat="request in requests">
@@ -120,7 +120,7 @@
 					<td>{{request.state}}</td>
 				</tr>
 			</table>
-			<button class="btn btn-default" ng-click="new_request()">Új kérvény</button>
+			<button class="btn btn-default" ng-click="new_request()">New request</button>
 		</div>
 		</div>
 		<div id="teacher_list">
@@ -130,11 +130,11 @@
 				<thead>
 					<tr>
 						<th>ID</th>
-						<th>Diák</th>
-						<th>Kérvény típusa</th>
-						<th>Ügyintéző</th>
-						<th>Komment</th>
-						<th>Állapot</th>
+						<th>Student</th>
+						<th>Request type</th>
+						<th>Administrator</th>
+						<th>Comment</th>
+						<th>State</th>
 					</tr>
 				</thead>
 				<tr ng-repeat="request in requests">
@@ -146,7 +146,7 @@
 					<td>{{request.state}}</td>
 				</tr>
 			</table>
-			<button class="btn btn-default" ng-click="teacher_forward()">Továbbítás</button>
+			<button class="btn btn-default" ng-click="teacher_forward()">Forward</button>
 		</div>
 		</div>
 		
@@ -156,11 +156,11 @@
 				<thead>
 					<tr>
 						<th>ID</th>
-						<th>Diák</th>
-						<th>Kérvény típusa</th>
-						<th>Tanár</th>
-						<th>Komment</th>
-						<th>Állapot</th>
+						<th>Student</th>
+						<th>Request type</th>
+						<th>Teacher</th>
+						<th>Comment</th>
+						<th>State</th>
 					</tr>
 				</thead>
 				<tr ng-repeat="request in requests">
@@ -170,10 +170,12 @@
 					<td>{{request.teacher}}</td>
 					<td>{{request.comment}}</td>
 					<td>{{request.state}}</td>
+					<td>
+						<button class="btn btn-default" ng-click="req_accept(request.ID)">Accept</button>
+						<button class="btn btn-default" ng-click="req_decline(request.ID)">Decline</button>
+					</td>
 				</tr>
 			</table>
-			<button class="btn btn-default" ng-click="req_accept()">Elfogad</button>
-			<button class="btn btn-default" ng-click="req_decline()">Elutasít</button>
 		</div>
 	</div>
 	</body>

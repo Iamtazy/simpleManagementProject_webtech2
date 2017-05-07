@@ -8,7 +8,6 @@ var app = express();
 
 var logins = JSON.parse(fs.readFileSync(__dirname+"/logins.json"));
 var reqtemplates = ["Tűzgyújtási kérelem", "Tárgyfelvétel"];
-var requests = JSON.parse(fs.readFileSync(__dirname+"/requests.json"));
 
 app.use(express.static('public'));
 app.use(express.static('public/js'));
@@ -29,6 +28,7 @@ app.post("/login", function(req, res) {
 
 app.post("/edit", function(req, res) {
 	var response = "err";
+	var requests = JSON.parse(fs.readFileSync(__dirname+"/requests.json"));
 	
 	logins.forEach(function(item, index) {
 		if (item.name === req.body.name) {
@@ -44,6 +44,7 @@ app.post("/edit", function(req, res) {
 
 app.post("/listrequests", function(req, res) {
 	var response = [];
+	var requests = JSON.parse(fs.readFileSync(__dirname+"/requests.json"));
 	
 	if (req.body.pos === "student") {
 		requests.forEach(function(item, index) {
@@ -76,6 +77,7 @@ app.post("/listtemplates", function(req, res) {
 app.post("/verdict", function(req, res)  {
 	var response = "err";
 	var id = req.body.id;
+	var requests = JSON.parse(fs.readFileSync(__dirname+"/requests.json"));
 	
 	if (requests[id].state === "Pending") {
 		requests[id].state = req.body.newstate;
@@ -100,6 +102,7 @@ app.post("/createtemplate", function(req, res) {
 app.post("/comment", function(req, res) {
 	var response = "err";
 	var id = req.body.id;
+	var requests = JSON.parse(fs.readFileSync(__dirname+"/requests.json"));
 	
 	if(req.body.pos === "teacher") {
 		requests[id].comment = req.body.comment;
@@ -112,6 +115,7 @@ app.post("/comment", function(req, res) {
 app.post("/forward", function(req, res) {
 	var response = "err";
 	var id = req.body.id;
+	var requests = JSON.parse(fs.readFileSync(__dirname+"/requests.json"));
 	
 	if (req.body.pos === "teacher" && requests[id].administrator === undefined) {
 		requests[id].administrator = req.body.forwardto;

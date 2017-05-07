@@ -99,8 +99,8 @@
 			
 			$scope.show_loggedUser = function () {
 				if (userLevel === "notLoggedIn") {
-					$scope.userLevel = "jelentkezzen be!";
-					$scope.loggedInUser = "Nincs bejelentkezve senki";
+					$scope.userLevel = "please log in!";
+					$scope.loggedInUser = "No user is currenty logged in";
 				} else {
 					$scope.userLevel = userLevel;
 					$scope.loggedInUser = loggedInUser;
@@ -110,14 +110,14 @@
 				if (userLevel === "notLoggedIn")
 					setVisibility("login");
 				else
-					alert("Elõször jelentkezz ki!");
+					alert("You have to logout first!");
 			};
 
 			$scope.show_edit = function() {
 				if (userLevel !== "notLoggedIn") {
 					setVisibility("editUser");
 				} else {
-					alert("Bejelentkezés szükséges!");
+					alert("You have to log in first!");
 			}};
 
 			$scope.show_student_list = function() {
@@ -125,7 +125,7 @@
 					$scope.listRequests("student");
 					setVisibility("student_list");
 				} else {
-					alert("Nincs hozzá jogosultságod! Lépj be tanulóként!");
+					alert("Access denied! You have to log in as a student!");
 			}};
 			
 			$scope.show_teacher_list = function() {
@@ -133,7 +133,7 @@
 					$scope.listRequests("teacher");
 					setVisibility("teacher_list");
 				} else {
-					alert("Nincs hozzá jogosultságod! Lépj be tanárként!");
+					alert("Access denied! You have to log in as a teacher!");
 			}};
 			
 			$scope.show_admin_list = function() {
@@ -141,7 +141,7 @@
 					$scope.listRequests("admin");
 					setVisibility("admin_list");
 				} else {
-					alert("Nincs hozzá jogosultságod! Lépj be adminként!");
+					alert("Access denied! You have to log in as an administrator!");
 			}};
 			
 			$scope.login = function() {
@@ -154,19 +154,19 @@
 					$scope.show_loggedUser();
 					switch(userLevel) {
 						case "teacher":
-							alert("Sikeres bejelentkezés tanárként!");
+							alert("Successful log in as a teacher!");
 							$scope.show_teacher_list();
 							break;
 						case "admin":
-							alert("Sikeres bejelentkezés adminisztrátorként!");
+							alert("Successful log in as an administrator!");
 							$scope.show_admin_list();
 							break;
 						case "student":
-							alert("Sikeres bejelentkezés tanulóként!");
+							alert("Successful log in as a student!");
 							$scope.show_student_list();
 							break;
 						default:
-							alert("Hiba a bejelentkezéskor!");
+							alert("Log in error!");
 }
 					console.log(userLevel);
 				});
@@ -176,7 +176,9 @@
 				loggedInUser = "notLoggedInUser";
 				userLevel = "notLoggedIn";
 				$scope.show_loggedUser();
-				alert("Kijelentkezve!");
+				document.getElementById("username").value = "";
+				document.getElementById("password").value = "";
+				alert("Logged out!");
 				$scope.show_login();
 			};
 			
@@ -195,9 +197,9 @@
 				
 				$http.post("/edit", {"name" : loggedInUser, "pass" : oldpassword, "newpass" : newpassword, "newpassagain" : repeatpassword}).then(function(data) {
 					if (data.data === "ok")
-						alert("Jelszó megváltoztatva!");
+						alert("Password changed!");
 					else if (data.data === "err")
-						alert("Hiba a jelszó megváltoztatásakor!");
+						alert("Error while changing password!");
 					console.log(data.data);
 				});
 				
@@ -223,19 +225,19 @@
 				});
 			};
 			
-			$scope.req_accept = function() {
-				var reqID = prompt("Hányas ID-jût szeretné elfogadni?");
+			$scope.req_accept = function(reqID) {
 				
 				$http.post("/verdict", {"id" : reqID, "newstate" : "Accepted"}).then(function(data) {
 					console.log(data.data);
+					$scope.show_admin_list();
 				});
 			};
 			
-			$scope.req_decline = function() {
-				var reqID = prompt("Hányas ID-jût szeretné elutasítani?");
+			$scope.req_decline = function(reqID) {
 				
 				$http.post("/verdict", {"id" : reqID, "newstate" : "Declined"}).then(function(data) {
 					console.log(data.data);
+					$scope.show_admin_list();
 				});
 			};
 			$scope.show_loggedUser();
