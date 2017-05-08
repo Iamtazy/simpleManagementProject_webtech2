@@ -206,22 +206,25 @@
 			};
 			
 			$scope.new_request = function() {
-				var type = prompt("type");
-				var fromUser = prompt("from");
-				var teacher = prompt("teacher");
+				var type = prompt("What type is the request?");
+				var fromUser = $scope.loggedInUser;
+				var teacher = prompt("To which teacher?");
+				var comment = prompt("Comment:");
 				
-				$http.post("/submit", {"type" : type, "from" : fromUser, "teacher" : teacher}).then(function(data) {
+				$http.post("/submit", {"type" : type, "from" : fromUser, "teacher" : teacher, "comment" : comment}).then(function(data) {
 					console.log(data.data);
+					$scope.show_student_list();
 				});
 			};
 			
 			$scope.teacher_forward = function() {
-				var reqID = prompt("ID");
-				var pos = prompt("pos");
-				var forwardto = prompt("forwardto");
+				var reqID = prompt("Which request would you like to forward?");
+				var pos = $scope.userLevel;
+				var forwardto = prompt("To which administrator?");
 				
 				$http.post("/forward", {"id" : reqID, "pos" : pos, "forwardto" : forwardto}).then(function(data) {
 					console.log(data.data);
+					$scope.show_teacher_list();
 				});
 			};
 			

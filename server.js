@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 var app = express();
 
 var logins = JSON.parse(fs.readFileSync(__dirname+"/logins.json"));
-var reqtemplates = ["Tűzgyújtási kérelem", "Tárgyfelvétel"];
 
 app.use(express.static('public'));
 app.use(express.static('public/js'));
@@ -117,8 +116,9 @@ app.post("/forward", function(req, res) {
 	var id = req.body.id;
 	var requests = JSON.parse(fs.readFileSync(__dirname+"/requests.json"));
 	
-	if (req.body.pos === "teacher" && requests[id].administrator === undefined) {
+	if (req.body.pos === "teacher" && requests[id].administrator === "") {
 		requests[id].administrator = req.body.forwardto;
+		fs.writeFile(__dirname+"/requests.json",JSON.stringify(requests));
 		response = "ok";
 	}
 	res.send(response);
@@ -126,17 +126,14 @@ app.post("/forward", function(req, res) {
 
 app.post("/submit", function(req, res) {
 	var response = "err";
-	var body = req.body;
-	var type = undefined;
+	var type = req.body.type;
+	var fromUser = req.body.from;
+	var teacher = req.body.teacher;
+	var comment = req.body.comment;
+	var requests = JSON.parse(fs.readFileSync(__dirname+"/requests.json"));
 	
-	reqtemplates.forEach(function(item, index) {
-		if (item === body.type) {
-			type = index;
-		}
-	});
-	
-	if (type != undefined && body.from != undefined && body.teacher != undefined) {
-		requests.push({"ID" : requests.length, "type" : type, "from" : body.from, "teacher" : body.teacher, "comment" : undefined, "state" : "Pending", "administrator" : undefined});
+	if (type != "" && fromUser != "" && teacher != "") {
+		requests.push({"ID" : requests.length, "type" : type, "from" : fromUser, "teacher" : teacher, "comment" : comment, "state" : "Pending", "administrator" : ""});
 		fs.writeFile(__dirname+"/requests.json",JSON.stringify(requests));
 		response = "ok";
 	}
