@@ -9,7 +9,7 @@
 		<meta charset="UTF-8">
 		<style>
 			#space{
-				height:80px;
+				height:200px;
 				}
 			#logUser{
 				margin-top: 15px;
@@ -19,6 +19,30 @@
 			}
 			#logoutButton{
 				margin-right: 45px;
+			}
+			#content{
+				background-image: url("img/backg.jpg");
+				height: 100%;
+			}
+			.navli:hover{
+				background-color: green;
+			}
+			a {
+				color: grey;
+			}
+			#usernameField, #passwordField {
+				background-color: #e6ffe6;
+			}
+			#actualLoginBtn{
+				margin-top: 25px;
+			}
+			th {
+				background-color: green;
+				color: black;
+			}
+			td {
+				background-color: grey;
+				color: white;
 			}
 		</style>
 		
@@ -30,73 +54,74 @@
 					<a class="navbar-brand" >Request Management</a>
 				</div>
 				<ul class="nav navbar-nav">
-					<li id="loginButton"><button class="btn navbar-btn" ng-click="show_login()">Login</button></li>
-					<li><button class="btn navbar-btn" ng-click="show_edit()">Edit user</button></li>
-					<li><button class="btn navbar-btn" ng-click="show_student_list()">Student requests</button></li>
-					<li><button class="btn navbar-btn" ng-click="show_teacher_list()">Teacher requests</button></li>
-					<li><button class="btn navbar-btn" ng-click="show_admin_list()">Admin requests</button></li>
+					<li id="loginButton" class="navli"><a href="#" ng-click="show_login()">Login</a></li>
+					<li class="navli"><a href="#" ng-click="show_edit()">Edit user</a></li>
+					<li class="navli"><a href="#" ng-click="show_student_list()">Student requests</a></li>
+					<li class="navli"><a href="#" ng-click="show_teacher_list()">Teacher requests</a></li>
+					<li class="navli"><a href="#" ng-click="show_admin_list()">Admin requests</a></li>
 					<li id="logUser"><p>User logged in:  {{loggedInUser}}, {{userLevel}}</p></li>
 				</ul>
 				<ul class="nav navbar-right">
-					<li id="logoutButton"><button class="btn navbar-btn" ng-click="logout()">Logout</button></li>
+					<li id="logoutButton" class="navli"><a href="#" ng-click="logout()">Logout</a></li>
 				</ul>
 			</div>
 		</nav>
+		<div id="content">
 		<div id="space"></div>
 		<div id="login">
 		<div class="container">		
 			<form>
 				<div class="row">
-					<div class="col-sm-offset-3 col-sm-3" style="background-color:lavenderblush;">
-						<div class="form-group"> Username:
-							<input type="text" name="username" id ="username">
+					<div class="col-md-offset-3 col-md-3" id="usernameField">
+						<div class="form-group">
+							<label for="username">Username:</label>
+							<input type="text" class="form-control" id="username">
 						</div>
 					</div>
-					<div class="col-sm-3" style="background-color:lavender;"><div class="form-group">
-						Password:
-						<input type="password" name="password" id="password">
-					</div>
+					<div class="col-md-3" id="passwordField">
+						<div class="form-group">
+							<label for="pwd">Password:</label>
+							<input type="password" class="form-control" id="password">
+						</div>
 				</div>
-				<div class="col-sm-3" >
-					<button class="btn btn-default" ng-click="login()">Login</button>
+				<div class="col-md-3" >
+					<button class="btn btn-default" ng-click="login()" id="actualLoginBtn">Login</button>
 				</div>
-				<div class="col-sm-3" ></div>
 				</div>			
 			</form>			
 		 </div>			
 		</div>	
 		<div id="editUser">
 		<div class="container">
-		
 			<form>
-				<div class="row">
-					<div class="col-sm-offset-3 col-sm-3" style="background-color:lavenderblush;">
-						<div class="form-group"> Old password:
-							<input type="password" name="oldpassword" id ="oldpassword">
+					<div class="row">
+						<div class="col-lg-offset-3 col-lg-3" style="background-color:lavender;">
+							<div class="form-group">
+								<label for="username">Old password:</label>
+								<input type="password" class="form-control" id="oldpassword">
+							</div>
 						</div>
-					</div>
-					 <div class="col-sm-4" style="background-color:lavender;">
-						 <div class="form-group">
-							New password:
-							<input type="password" name="newpassword" id="newpassword">
+						 <div class="col-lg-3" style="background-color:lavender;">
+							 <div class="form-group">
+								<label for="username">New password:</label>
+								<input type="password" class="form-control" id="newpassword">
+							</div>
 						</div>
+						<div class="col-lg-3"></div>
 					</div>
-				</div>
-				<div class="row">
-				  	  <div class="col-sm-offset-3 col-sm-3" >
-						  <button class="btn btn-default" ng-click="edit_user_details()">Change</button>
-				    	</div>
-			
-					 <div class="col-sm-4" style="background-color:lavenderblush;">
-						 <div class="form-group">
-							Retype password:
-						<input type="password" name="repeatpassword" id="repeatpassword">
+					<!--<div class="row">
+						 <div class="col-md-6" style="background-color:lavenderblush;">
+							<div class="form-group">
+								<label for="username">Retype password:</label>
+								<input type="password" class="form-control" id="repeatpassword">
+							</div>
 						</div>
-					</div>
-				</div>
+						<div class="col-md-6">
+							<button class="btn btn-default" ng-click="edit_user_details()">Change</button>
+						</div>
+					</div>-->
 			</form>
 		</div>
-			
 		</div>
 	
 		<div id="student_list">
@@ -123,9 +148,9 @@
 			<button class="btn btn-default" ng-click="new_request()">New request</button>
 		</div>
 		</div>
+		
 		<div id="teacher_list">
 		<div class="container">
-		
 			<table class="table table-bordered">
 				<thead>
 					<tr>
@@ -177,6 +202,7 @@
 				</tr>
 			</table>
 		</div>
+	</div>
 	</div>
 	</body>
 	<script>

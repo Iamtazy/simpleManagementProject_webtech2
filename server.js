@@ -70,9 +70,9 @@ app.post("/listrequests", function(req, res) {
 	res.send(response);
 });
 
-app.post("/listtemplates", function(req, res) {
+/*app.post("/listtemplates", function(req, res) {
 	res.send(reqtemplates);
-});
+});*/
 
 app.post("/verdict", function(req, res)  {
 	var response = "err";
@@ -88,7 +88,7 @@ app.post("/verdict", function(req, res)  {
 	res.send(response);
 });
 
-app.post("/createtemplate", function(req, res) {
+/*app.post("/createtemplate", function(req, res) {
 	var response = "err";
 	
 	if (req.body.pos === "admin") {
@@ -97,7 +97,7 @@ app.post("/createtemplate", function(req, res) {
 	}
 	
 	res.send(response);
-});
+});*/
 
 app.post("/comment", function(req, res) {
 	var response = "err";
